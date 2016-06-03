@@ -1,9 +1,12 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import javax.swing.*;
+
+import com.sun.glass.ui.MenuBar;
 
 @SuppressWarnings("serial")
 public class JanelaPrincipal extends JFrame {
@@ -12,22 +15,57 @@ public class JanelaPrincipal extends JFrame {
 		
 		super ("TRABALHO JAVA A2");
 		
-		JPanel panel1 = new JPanel();
-		panel1.setLayout (new GridLayout (3, 2));
+		JPanel panel = new JPanel();
+		panel.setLayout (new BorderLayout());
 	    
-	    JTextField textFieldNome = new JTextField (15);
-	    JTextField textFieldSobrenome = new JTextField (15);
+		JMenuBar menuMestre = new JMenuBar();
 		
-	    panel1.add (new JLabel ("Nome: "));
-        panel1.add (textFieldNome);
-        
-        panel1.add (new JLabel ("Sobrenome"));
-        panel1.add (textFieldSobrenome);
-        
-        panel1.add (new JButton("Salvar"));
-        
-        add (panel1);
-        //add(panel2);
+		JMenu menuCadastro = new JMenu("Cadastro");
+		
+		menuMestre.add(menuCadastro);
+		
+		setJMenuBar(menuMestre);
+		
+		JMenuItem subMenuCadastro = new JMenuItem("Cadastro");
+		JMenuItem subMenuPesquisa = new JMenuItem("Pesquisa");
+		
+		menuCadastro.add(subMenuCadastro);
+		menuCadastro.add(subMenuPesquisa);
+		
+		
+		// ------------ EVENTOS DO MENU ----------------
+		subMenuCadastro.addActionListener (new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				System.out.println ("teste de evento - Cadastro");
+				JFrame frameCadastro = new JFrame ("Cadastro");
+				
+				JPanel panelCadastro = new JPanel();
+				frameCadastro.setLayout (new GridLayout (3, 2));
+				
+			    JTextField textFieldNome = new JTextField (15);
+			    JTextField textFieldSobrenome = new JTextField (15);
+			    
+			    panelCadastro.add (new JLabel ("Nome: "));
+			    panelCadastro.add (textFieldNome);
+		        
+			    panelCadastro.add (new JLabel ("Sobrenome"));
+			    panelCadastro.add (textFieldSobrenome);
+			    
+			    frameCadastro.add(panelCadastro);
+			    
+			    frameCadastro.pack();
+			    frameCadastro.setLocationRelativeTo (null);
+				
+			    frameCadastro.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+			    frameCadastro.setVisible (true);
+			}
+		});
+
+		subMenuPesquisa.addActionListener (new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				System.out.println("teste de evento - Pesquisa");
+			}
+		});
 
         pack();
 		setLocationRelativeTo (null);
