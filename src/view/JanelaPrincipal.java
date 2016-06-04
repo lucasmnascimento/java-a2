@@ -37,27 +37,7 @@ public class JanelaPrincipal extends JFrame {
 		subMenuCadastro.addActionListener (new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
 				System.out.println ("teste de evento - Cadastro");
-				JFrame frameCadastro = new JFrame ("Cadastro");
-				
-				JPanel panelCadastro = new JPanel();
-				frameCadastro.setLayout (new GridLayout (3, 2));
-				
-			    JTextField textFieldNome = new JTextField (15);
-			    JTextField textFieldSobrenome = new JTextField (15);
-			    
-			    panelCadastro.add (new JLabel ("Nome: "));
-			    panelCadastro.add (textFieldNome);
-		        
-			    panelCadastro.add (new JLabel ("Sobrenome"));
-			    panelCadastro.add (textFieldSobrenome);
-			    
-			    frameCadastro.add(panelCadastro);
-			    
-			    frameCadastro.pack();
-			    frameCadastro.setLocationRelativeTo (null);
-				
-			    frameCadastro.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
-			    frameCadastro.setVisible (true);
+				new CadastroView();
 			}
 		});
 
