@@ -61,6 +61,9 @@ public class CadastroView {
 							mensalidade.getText() != null && !mensalidade.getText().equals ("") && 
 							dataAdm.getText() != null && !dataAdm.getText().equals ("")) {
 						System.out.println("teste");
+						
+						
+						
 					} else {
 						JOptionPane.showMessageDialog(botaoSalvar, "Todos os campos são obrigatórios");
 					}
