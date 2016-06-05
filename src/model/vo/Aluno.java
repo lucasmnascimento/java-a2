@@ -1,7 +1,8 @@
 package model.vo;
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class Aluno {
+public class Aluno implements Serializable{
 	private int matricula;
 	private String nome;
 	private double mensalidade;
