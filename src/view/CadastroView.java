@@ -91,11 +91,6 @@ public class CadastroView {
 						
 						try {
 							objectOutput = new ObjectOutputStream(outputStream);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						
-						try {
 							objectOutput.writeObject(aluno);
 						} catch (IOException e1) {
 							e1.printStackTrace();
