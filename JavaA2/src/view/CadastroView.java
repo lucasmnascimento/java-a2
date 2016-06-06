@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,7 +37,7 @@ public class CadastroView {
 		JPanel panelCadastro = new JPanel();
 		frameCadastro.setLayout (new GridLayout (3, 3));
 		
-		matricula = new JTextField (5);
+            matricula = new JTextField (5);
 	    nome = new JTextField (15);
 	    mensalidade = new JTextField (5);
 	    dataAdm = new JTextField (10);
@@ -44,7 +45,7 @@ public class CadastroView {
 	    JButton botaoSalvar = new JButton ("Salvar");
 	    
 	    
-	    panelCadastro.add (new JLabel ("MatrÌcula "));
+	    panelCadastro.add (new JLabel ("Matr√≠cula "));
 	    panelCadastro.add (matricula);
 	    
 	    panelCadastro.add (new JLabel ("Nome "));
@@ -76,11 +77,9 @@ public class CadastroView {
 						int ano = Integer.parseInt(dataInformada.substring (6));
 						
 						GregorianCalendar dataConvertida = new GregorianCalendar (ano, mes, dia);
-						
 						double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
 						
 						Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
-						
 						OutputStream outputStream = null;
 						ObjectOutputStream objectOutput = null;
 						try {
@@ -91,17 +90,19 @@ public class CadastroView {
 						
 						try {
 							objectOutput = new ObjectOutputStream(outputStream);
-							objectOutput.writeObject(aluno);
+                                                        LinkedHashSet lhs = new LinkedHashSet();
+                                                        lhs.add(aluno);
+                                                        objectOutput.writeObject(lhs);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 						
-						JOptionPane.showMessageDialog(botaoSalvar, "GravaÁ„o efetuada com sucesso");
+						JOptionPane.showMessageDialog(botaoSalvar, "Grava√ß√£o efetuada com sucesso");
 						
 						frameCadastro.dispose();
 						
 					} else {
-						JOptionPane.showMessageDialog(botaoSalvar, "Todos os campos s„o obrigatÛrios");
+						JOptionPane.showMessageDialog(botaoSalvar, "Todos os campos s√£o obrigat√≥rios");
 					}
 				}
 	    	}
