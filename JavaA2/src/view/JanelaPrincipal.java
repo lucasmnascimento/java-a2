@@ -16,25 +16,24 @@ public class JanelaPrincipal extends JFrame {
 		super ("TRABALHO JAVA A2");
 		
 		JPanel panel = new JPanel();
-                
-		panel.setLayout(new BorderLayout());
-             
-                                	    
+                panel.setLayout(new BorderLayout());
+                             	    
 		JMenuBar menuMestre = new JMenuBar();
 		
 		JMenu menuCadastro = new JMenu("Cadastro");
-		
+
 		menuMestre.add(menuCadastro);
 		
 		setJMenuBar(menuMestre);
-		
+		JMenu menuDois = new JMenu("Ajuda");
+                menuMestre.add(menuDois);
 		JMenuItem subMenuCadastro = new JMenuItem("Cadastro");
 		JMenuItem subMenuPesquisa = new JMenuItem("Pesquisa");
 		
 		menuCadastro.add(subMenuCadastro);
 		menuCadastro.add(subMenuPesquisa);
                 
-                			
+                                             
 		// ------------ EVENTOS DO MENU ----------------
 		subMenuCadastro.addActionListener (new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
@@ -46,12 +45,13 @@ public class JanelaPrincipal extends JFrame {
 		subMenuPesquisa.addActionListener (new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
 				System.out.println("teste de evento - Pesquisa");
+                                new PesquisaView();
 			}
 		});
-
+                
         pack();
 		setLocationRelativeTo (null); // Inicia a Janela no centro da tela 
-                setSize(400, 200); // Ajusta o tamanho da janela (largura x altura) em pixel 
+               // setSize(400, 200); // Ajusta o tamanho da janela (largura x altura) em pixel 
                 addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent e) {
 			    int confirma = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja sair do programa?", "Sair", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
