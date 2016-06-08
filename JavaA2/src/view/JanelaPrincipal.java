@@ -13,8 +13,8 @@ public class JanelaPrincipal extends JFrame {
 
 	public JanelaPrincipal() {
 		
-		super ("TRABALHO JAVA A2");
-		
+		super ("TRABALHO JAVA A2 teste");
+
 		JPanel panel = new JPanel();
                 panel.setLayout(new BorderLayout());
                              	    
