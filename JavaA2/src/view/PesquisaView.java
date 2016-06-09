@@ -90,6 +90,7 @@ public class PesquisaView {
                                         
                                         for (Aluno alu : lhs){
                                             System.out.println(aluno.toString());
+                                            new DadosView();
                                         }
                                         
                                         
