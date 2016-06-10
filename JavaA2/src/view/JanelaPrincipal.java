@@ -25,14 +25,12 @@ public class JanelaPrincipal extends JFrame {
 		menuMestre.add(menuCadastro);
 		
 		setJMenuBar(menuMestre);
-		JMenu menuDois = new JMenu("Ajuda");
-                menuMestre.add(menuDois);
 		JMenuItem subMenuCadastro = new JMenuItem("Cadastro");
 		JMenuItem subMenuPesquisa = new JMenuItem("Pesquisa");
 		
 		menuCadastro.add(subMenuCadastro);
 		menuCadastro.add(subMenuPesquisa);
-                
+               
                                              
 		// ------------ EVENTOS DO MENU ----------------
 		subMenuCadastro.addActionListener (new ActionListener() {
@@ -48,7 +46,7 @@ public class JanelaPrincipal extends JFrame {
                                 new PesquisaView();
 			}
 		});
-                
+               
         pack();
 		setLocationRelativeTo (null); // Inicia a Janela no centro da tela 
                // setSize(400, 200); // Ajusta o tamanho da janela (largura x altura) em pixel 
