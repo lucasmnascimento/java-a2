@@ -48,7 +48,7 @@ public class CadastroView {
             ftmData.setValidCharacters("0123456789");
             ftmData.setPlaceholderCharacter('_');
 	    dataAdm = new JFormattedTextField(ftmData);
-            dataAdm.setColumns(7);
+            dataAdm.setColumns(7); 
 	    
 	    JButton botaoSalvar = new JButton ("Salvar");
 	    
