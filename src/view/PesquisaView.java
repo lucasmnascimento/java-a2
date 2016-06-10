@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +22,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import model.vo.Aluno;
@@ -68,56 +71,77 @@ public class PesquisaView {
 	    
 	    botaoPesquisar.addActionListener(
 	    	new ActionListener() {
+				@SuppressWarnings({ "unchecked", "unused", "resource" })
 				@Override
 				public void actionPerformed (ActionEvent e) {
-                                    FileInputStream obj = null;
-                                    try {
-                                        String dataInformada = dataAdm.getText();
-                                        String nomeInformado = nome.getText();
-                                        int dia = Integer.parseInt(dataInformada.substring (0,2));
-                                        int mes = Integer.parseInt(dataInformada.substring (3,5));
-                                        int ano = Integer.parseInt(dataInformada.substring (6));
-                                        GregorianCalendar dataConvertida = new GregorianCalendar (ano, mes, dia);
-                                        double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
-                                        
-                                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
-                                        
-                                        obj = new FileInputStream ("base.bas");
-                                        ObjectInputStream lerObj = new ObjectInputStream(obj);
-                                        
-                                        LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
-                                        
-                                        
-                                        for (Aluno alu : lhs){
-                                            System.out.println(aluno.toString());
-                                        }
-                                        
-                                        
-                                        
-                                        
-                                        framePesquisa.dispose();
-                                        
-                                        
-                                        
-                                    } catch (FileNotFoundException ex) {
-                                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
-                                        System.out.println("Arquivo não encontrado!");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
-                                        System.out.println("Erro de IO!");
-                                    } catch (ClassNotFoundException ex) {
-                                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
-                                    } finally {
-                                        try {
-                                            obj.close();
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
-                                            System.out.println("Erro de IO!");
-                                        }
-                                    }
-						
-			
-					}
+                    FileInputStream obj = null;
+                    try {
+                        String dataInformada = dataAdm.getText();
+                        String nomeInformado = nome.getText();
+                        
+                        GregorianCalendar dataConvertida = null;
+                        
+                        if (dataInformada != null && !dataInformada.equals ("")) {
+	                        int dia = Integer.parseInt(dataInformada.substring (0,2));
+	                        int mes = Integer.parseInt(dataInformada.substring (3,5));
+	                        int ano = Integer.parseInt(dataInformada.substring (6));
+	                        
+	                        dataConvertida = new GregorianCalendar (ano, mes, dia);
+                        }
+                        
+                        dataConvertida = new GregorianCalendar();
+                        
+                        double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
+                        
+                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
+                        
+                        obj = new FileInputStream ("base.bas");
+                        ObjectInputStream lerObj = new ObjectInputStream(obj);
+                        
+                        LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+                        
+                        for (Aluno alu : lhs){
+                            System.out.println(aluno.toString());
+                        }
+                        
+                        String[] colunas = new String[] {"Matr�cula","Nome","Mensalidade", "Data"};
+                        
+                        Object[] listaobjetos = (Object[]) lhs.toArray();
+                        
+                        String matrizAluno[][] = new String[listaobjetos.length][4];
+                        
+                        for (int j = 0; j < lhs.size(); j++) {
+                        	
+                        	Aluno alunoObj = (Aluno) listaobjetos[j];
+                        	
+                    		matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
+                    		matrizAluno[j][1] = alunoObj.getNome();
+                    		matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
+                    		matrizAluno[j][3] = alunoObj.getNome().toString();
+                    	}
+                        
+                        JTable tabela = new JTable(matrizAluno,colunas);
+                        JScrollPane scroll = new JScrollPane();
+                        scroll.setViewportView(tabela);
+                        framePesquisa.add(scroll);
+                        
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Arquivo não encontrado!");
+                    } catch (IOException ex) {
+                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Erro de IO!");
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        try {
+                            obj.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("Erro de IO!");
+                        }
+                    }
+				}
 	    	}
 	    );
 	    
