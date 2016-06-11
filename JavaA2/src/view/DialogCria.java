@@ -4,6 +4,8 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class DialogCria extends JFrame{
 	
+	
+	
 	public DialogCria(){
 		super("Criar novo objeto");
 		setSize(400,300);
