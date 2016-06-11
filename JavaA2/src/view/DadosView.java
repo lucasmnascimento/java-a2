@@ -49,22 +49,7 @@ public class DadosView extends JFrame{
 		tabela.setModel(modeloTabela);
 		
 		
-		
-		/*
-		try{
-			FileInputStream obj = new FileInputStream("base.bas");
-			ObjectInputStream lerObj = new ObjectInputStream(obj);
-			 LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
-			
-			 for (Aluno alu : lhs){
-                 modeloTabela.addRow();
-                 new DadosView();
-             }
-			
-		}
-		catch(FileNotFoundException ex){
-			JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
-		}*/
+	
 	}
 
 }
