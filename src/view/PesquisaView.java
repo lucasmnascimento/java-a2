@@ -60,11 +60,11 @@ public class PesquisaView {
 	    panelPesquisa.add (new JLabel ("Nome "));
 	    panelPesquisa.add (nome);
         
-	    //panelPesquisa.add (new JLabel ("Mensalidade"));
-	    //panelPesquisa.add (mensalidade);
+	    panelPesquisa.add (new JLabel ("Mensalidade"));
+	    panelPesquisa.add (mensalidade);
 	    
-	    //panelPesquisa.add (new JLabel ("Data"));
-	    //panelPesquisa.add (dataAdm);
+	    panelPesquisa.add (new JLabel ("Data"));
+	    panelPesquisa.add (dataAdm);
 	    
 	    panelPesquisa.add (botaoPesquisar);
 	    
@@ -77,9 +77,10 @@ public class PesquisaView {
 				public void actionPerformed (ActionEvent e) {
                     FileInputStream obj = null;
                     try {
-                       // String dataInformada = dataAdm.getText();
+                    	String matriculaInformada = matricula.getText();
+                        String dataInformada = dataAdm.getText();
                         String nomeInformado = nome.getText();
-                        /*
+                        
                         GregorianCalendar dataConvertida = null;
                         
                         if (dataInformada != null && !dataInformada.equals ("")) {
@@ -93,24 +94,22 @@ public class PesquisaView {
                         dataConvertida = new GregorianCalendar();
                         
                         double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
-                        */
+                        int matricula = Integer.parseInt(matriculaInformada);
                         
-                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText());
-                        
+                        Aluno aluno = new Aluno(matricula, nome.getText(), mensalidadeConvertida, dataConvertida);
                         obj = new FileInputStream ("base.bas");
                         ObjectInputStream lerObj = new ObjectInputStream(obj);
-                        
                         LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
                         
                         for (Aluno alu : lhs){
                             System.out.println(aluno.toString());
                         }
                         
-                        String[] colunas = new String[] {"Matrícula","Nome"};
+                        String[] colunas = new String[] {"Matrícula","Nome", "Mensalidade", "Data"};
                         
                         Object[] listaobjetos = (Object[]) lhs.toArray();
                         
-                        String matrizAluno[][] = new String[listaobjetos.length][2];
+                        String matrizAluno[][] = new String[listaobjetos.length][4];
                         
                         
                         for (int j = 0; j < lhs.size(); j++) {
@@ -119,13 +118,14 @@ public class PesquisaView {
                         	
                     		matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
                     		matrizAluno[j][1] = alunoObj.getNome();
-                    		//matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
-                    		//matrizAluno[j][3] = alunoObj.formataData();
+                    		matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
+                    		matrizAluno[j][3] = alunoObj.formataData(alunoObj.getDataAdm());
                     	}
                         
                         JTable tabela = new JTable(matrizAluno,colunas);
                         JScrollPane scroll = new JScrollPane();
                         scroll.setViewportView(tabela);
+                        tabela.setEnabled(false);
                         framePesquisa.add(scroll);
                         
                         framePesquisa.repaint();

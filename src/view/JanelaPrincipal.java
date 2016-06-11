@@ -27,9 +27,13 @@ public class JanelaPrincipal extends JFrame {
                 menuMestre.add(menuDois);
 		JMenuItem subMenuCadastro = new JMenuItem("Cadastro");
 		JMenuItem subMenuPesquisa = new JMenuItem("Pesquisa");
+		//MENU DE TESTES
+		JMenuItem subMenuTeste = new JMenuItem("teste alunoview");
 		
 		menuCadastro.add(subMenuCadastro);
 		menuCadastro.add(subMenuPesquisa);
+		//MENU DE TESTES
+		menuCadastro.add(subMenuTeste);
                 
                                              
 		// ------------ EVENTOS DO MENU ----------------
@@ -44,6 +48,14 @@ public class JanelaPrincipal extends JFrame {
 			public void actionPerformed (ActionEvent e) {
 				System.out.println("teste de evento - Pesquisa");
                                 new PesquisaView();
+			}
+		});
+		
+		//MENU DE TESTES
+		subMenuTeste.addActionListener (new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				System.out.println("teste de evento - Pesquisa");
+                                new AlunoView();
 			}
 		});
                 

@@ -1,14 +1,19 @@
 package model.vo;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Aluno implements Serializable, Comparable<Object>{
+public class Aluno implements Serializable{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6325158508878264619L;
+//	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 6325158508878264619L;
 	private int matricula;
 	private String nome;
 	private double mensalidade;
@@ -16,16 +21,11 @@ public class Aluno implements Serializable, Comparable<Object>{
 	
 
 
-	public Aluno(int parseInt, String text, double mensalidadeConvertida, GregorianCalendar dataConvertida) {
+	public Aluno(int matricula, String nome, double mensalidade, GregorianCalendar dataAdm) {
 		this.matricula=matricula;
 		this.nome=nome;
 		this.mensalidade=mensalidade;
 		this.dataAdm=dataAdm;
-	}
-	
-	public Aluno(int matricula, String nome){
-		this.matricula=matricula;
-		this.nome=nome;
 	}
 
 	public int getMatricula() {
@@ -56,16 +56,19 @@ public class Aluno implements Serializable, Comparable<Object>{
 		return "Aluno [matricula=" + matricula + ", nome=" + nome + ", mensalidade=" + mensalidade + ", dataAdm="
 				+ dataAdm + "]";
 	}
-	public String formataData(){
-	    SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
-	    fmt.setCalendar(getDataAdm());
-	    String dateFormatted = fmt.format(getDataAdm().getTime());
-	    return dateFormatted;
+	public  String formataData(GregorianCalendar data){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 1);
+		SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+		String formatted = format1.format(cal.getTime());
+		return formatted;
 	}
-
+	
+	
+/*
 	@Override
 	public int compareTo(Object arg0) {
 		Aluno aluno = (Aluno) arg0;
 		return this.getNome().compareTo(aluno.getNome());
-	}
+	}*/
 }
