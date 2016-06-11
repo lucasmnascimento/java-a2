@@ -37,7 +37,7 @@ public class CadastroView {
 		JPanel panelCadastro = new JPanel();
 		frameCadastro.setLayout (new GridLayout (3, 3));
 		
-            matricula = new JTextField (5);
+        matricula = new JTextField (5);
 	    nome = new JTextField (15);
 	    mensalidade = new JTextField (5);
 	    dataAdm = new JTextField (10);
@@ -45,16 +45,20 @@ public class CadastroView {
 	    JButton botaoSalvar = new JButton ("Salvar");
 	    
 	    
-	    panelCadastro.add (new JLabel ("Matr√≠cula "));
+	    panelCadastro.add (new JLabel ("MatrÌcula "));
+	    matricula.setSize (2, 5);
 	    panelCadastro.add (matricula);
 	    
 	    panelCadastro.add (new JLabel ("Nome "));
+	    nome.setSize (2, 15);
 	    panelCadastro.add (nome);
         
 	    panelCadastro.add (new JLabel ("Mensalidade"));
+	    mensalidade.setSize (2, 5);
 	    panelCadastro.add (mensalidade);
 	    
 	    panelCadastro.add (new JLabel ("Data"));
+	    dataAdm.setSize (2, 5);
 	    panelCadastro.add (dataAdm);
 	    
 	    panelCadastro.add (botaoSalvar);
@@ -63,6 +67,7 @@ public class CadastroView {
 	    
 	    botaoSalvar.addActionListener(
 	    	new ActionListener() {
+				@SuppressWarnings({ "rawtypes", "unchecked" })
 				@Override
 				public void actionPerformed (ActionEvent e) {
 					if (matricula.getText() != null && !matricula.getText().equals ("") &&
@@ -90,19 +95,19 @@ public class CadastroView {
 						
 						try {
 							objectOutput = new ObjectOutputStream(outputStream);
-                                                        LinkedHashSet lhs = new LinkedHashSet();
-                                                        lhs.add(aluno);
-                                                        objectOutput.writeObject(lhs);
+                            LinkedHashSet lhs = new LinkedHashSet();
+                            lhs.add(aluno);
+                            objectOutput.writeObject(lhs);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 						
-						JOptionPane.showMessageDialog(botaoSalvar, "Grava√ß√£o efetuada com sucesso");
+						JOptionPane.showMessageDialog(botaoSalvar, "GravaÁ„o efetuada com sucesso");
 						
 						frameCadastro.dispose();
 						
 					} else {
-						JOptionPane.showMessageDialog(botaoSalvar, "Todos os campos s√£o obrigat√≥rios");
+						JOptionPane.showMessageDialog(botaoSalvar, "Todos os campos s„o obrigatÛrios");
 					}
 				}
 	    	}
@@ -114,4 +119,5 @@ public class CadastroView {
 	    frameCadastro.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
 	    frameCadastro.setVisible (true);
 	}
+	
 }
