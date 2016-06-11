@@ -125,6 +125,9 @@ public class PesquisaView {
                         scroll.setViewportView(tabela);
                         framePesquisa.add(scroll);
                         
+                        framePesquisa.repaint();
+                        framePesquisa.validate();
+                        
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
                         System.out.println("Arquivo não encontrado!");
