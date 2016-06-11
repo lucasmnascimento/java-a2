@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.Vector;
@@ -59,11 +60,11 @@ public class PesquisaView {
 	    panelPesquisa.add (new JLabel ("Nome "));
 	    panelPesquisa.add (nome);
         
-	    panelPesquisa.add (new JLabel ("Mensalidade"));
-	    panelPesquisa.add (mensalidade);
+	    //panelPesquisa.add (new JLabel ("Mensalidade"));
+	    //panelPesquisa.add (mensalidade);
 	    
-	    panelPesquisa.add (new JLabel ("Data"));
-	    panelPesquisa.add (dataAdm);
+	    //panelPesquisa.add (new JLabel ("Data"));
+	    //panelPesquisa.add (dataAdm);
 	    
 	    panelPesquisa.add (botaoPesquisar);
 	    
@@ -76,9 +77,9 @@ public class PesquisaView {
 				public void actionPerformed (ActionEvent e) {
                     FileInputStream obj = null;
                     try {
-                        String dataInformada = dataAdm.getText();
+                       // String dataInformada = dataAdm.getText();
                         String nomeInformado = nome.getText();
-                        
+                        /*
                         GregorianCalendar dataConvertida = null;
                         
                         if (dataInformada != null && !dataInformada.equals ("")) {
@@ -92,8 +93,9 @@ public class PesquisaView {
                         dataConvertida = new GregorianCalendar();
                         
                         double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
+                        */
                         
-                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
+                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText());
                         
                         obj = new FileInputStream ("base.bas");
                         ObjectInputStream lerObj = new ObjectInputStream(obj);
@@ -104,11 +106,12 @@ public class PesquisaView {
                             System.out.println(aluno.toString());
                         }
                         
-                        String[] colunas = new String[] {"Matrícula","Nome","Mensalidade", "Data"};
+                        String[] colunas = new String[] {"Matrícula","Nome"};
                         
                         Object[] listaobjetos = (Object[]) lhs.toArray();
                         
-                        String matrizAluno[][] = new String[listaobjetos.length][4];
+                        String matrizAluno[][] = new String[listaobjetos.length][2];
+                        
                         
                         for (int j = 0; j < lhs.size(); j++) {
                         	
@@ -116,8 +119,8 @@ public class PesquisaView {
                         	
                     		matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
                     		matrizAluno[j][1] = alunoObj.getNome();
-                    		matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
-                    		matrizAluno[j][3] = alunoObj.getNome().toString();
+                    		//matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
+                    		//matrizAluno[j][3] = alunoObj.formataData();
                     	}
                         
                         JTable tabela = new JTable(matrizAluno,colunas);
