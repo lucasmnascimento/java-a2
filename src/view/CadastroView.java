@@ -3,20 +3,31 @@ package view;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import model.vo.Aluno;
 
@@ -26,6 +37,7 @@ public class CadastroView {
 	JTextField nome;
 	JTextField mensalidade;
 	JTextField dataAdm;
+	LinkedHashSet<Aluno> lhs;
 	
 	public CadastroView() {
 		init();
@@ -37,10 +49,20 @@ public class CadastroView {
 		JPanel panelCadastro = new JPanel();
 		frameCadastro.setLayout (new GridLayout (3, 3));
 		
+		
         matricula = new JTextField (5);
 	    nome = new JTextField (15);
 	    mensalidade = new JTextField (5);
-	    dataAdm = new JTextField (10);
+	    MaskFormatter ftmData; 
+		try {
+			ftmData = new MaskFormatter("##/##/####");
+			ftmData.setValidCharacters("0123456789");
+			ftmData.setPlaceholderCharacter('_');
+			dataAdm = new JFormattedTextField(ftmData);		
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	    
 	    JButton botaoSalvar = new JButton ("Salvar");
 	    
@@ -87,17 +109,24 @@ public class CadastroView {
 						Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
 						OutputStream outputStream = null;
 						ObjectOutputStream objectOutput = null;
-						try {
-							outputStream = new FileOutputStream ("base.bas");
-						} catch (FileNotFoundException e1) {
-							e1.printStackTrace();
-						}
 						
 						try {
+							FileInputStream obj = new FileInputStream ("base.bas");
+							ObjectInputStream lerObj = new ObjectInputStream(obj);
+							lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+							
+							obj.close();
+						} catch (IOException | ClassNotFoundException e1) {
+							e1.printStackTrace();
+							
+						} 
+						
+						try {
+							outputStream = new FileOutputStream ("base.bas");
 							objectOutput = new ObjectOutputStream(outputStream);
-                            LinkedHashSet lhs = new LinkedHashSet();
                             lhs.add(aluno);
                             objectOutput.writeObject(lhs);
+                            
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
