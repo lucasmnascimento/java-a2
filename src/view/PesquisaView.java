@@ -189,7 +189,7 @@ public class PesquisaView {
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						new AlunoView(aluno);
+						new AlunoView();
 						framePesquisa.dispose();
 					}});
 

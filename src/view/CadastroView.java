@@ -3,9 +3,12 @@ package view;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.text.NumberFormat;
@@ -13,6 +16,8 @@ import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -32,6 +37,7 @@ public class CadastroView {
 	JTextField nome;
 	JTextField mensalidade;
 	JTextField dataAdm;
+	LinkedHashSet<Aluno> lhs;
 	
 	public CadastroView() {
 		init();
@@ -103,17 +109,24 @@ public class CadastroView {
 						Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
 						OutputStream outputStream = null;
 						ObjectOutputStream objectOutput = null;
-						try {
-							outputStream = new FileOutputStream ("base.bas");
-						} catch (FileNotFoundException e1) {
-							e1.printStackTrace();
-						}
 						
 						try {
+							FileInputStream obj = new FileInputStream ("base.bas");
+							ObjectInputStream lerObj = new ObjectInputStream(obj);
+							lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+							
+							obj.close();
+						} catch (IOException | ClassNotFoundException e1) {
+							e1.printStackTrace();
+							
+						} 
+						
+						try {
+							outputStream = new FileOutputStream ("base.bas");
 							objectOutput = new ObjectOutputStream(outputStream);
-                            LinkedHashSet lhs = new LinkedHashSet();
                             lhs.add(aluno);
                             objectOutput.writeObject(lhs);
+                            
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
