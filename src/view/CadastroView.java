@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ public class CadastroView {
 	JTextField nome;
 	JTextField mensalidade;
 	JTextField dataAdm;
-	LinkedHashSet<Aluno> lhs;
+	LinkedHashSet<Aluno> lhs = new LinkedHashSet<Aluno>();
 	
 	public CadastroView() {
 		init();
@@ -89,7 +90,7 @@ public class CadastroView {
 	    
 	    botaoSalvar.addActionListener(
 	    	new ActionListener() {
-				@SuppressWarnings({ "rawtypes", "unchecked" })
+				@SuppressWarnings({ "rawtypes", "unchecked", "resource" })
 				@Override
 				public void actionPerformed (ActionEvent e) {
 					if (matricula.getText() != null && !matricula.getText().equals ("") &&
@@ -107,23 +108,35 @@ public class CadastroView {
 						double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
 						
 						Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
-						OutputStream outputStream = null;
-						ObjectOutputStream objectOutput = null;
+						
+						File base = new File("base.bas");
+						
+						if (!base.exists()) {
+							try {
+								base.createNewFile();
+							} catch (IOException e2) {
+								e2.printStackTrace();
+							}
+						}
 						
 						try {
-							FileInputStream obj = new FileInputStream ("base.bas");
+							FileInputStream obj = new FileInputStream (base);
 							ObjectInputStream lerObj = new ObjectInputStream(obj);
+							
 							lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
 							
 							obj.close();
-						} catch (IOException | ClassNotFoundException e1) {
+						} catch (ClassNotFoundException e1) {
 							e1.printStackTrace();
+						} catch (EOFException eofe) {
 							
-						} 
+						} catch (Exception exception) {
+							
+						}
 						
 						try {
-							outputStream = new FileOutputStream ("base.bas");
-							objectOutput = new ObjectOutputStream(outputStream);
+							OutputStream outputStream = new FileOutputStream (base);
+							ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream);
                             lhs.add(aluno);
                             objectOutput.writeObject(lhs);
                             
