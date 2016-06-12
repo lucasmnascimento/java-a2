@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -103,54 +104,126 @@ public class PesquisaView {
 
 							GregorianCalendar dataConvertida = null;
 
-							if (dataInformada != null && !dataInformada.equals ("")) {
-								int dia = Integer.parseInt(dataInformada.substring (0,2));
-								int mes = Integer.parseInt(dataInformada.substring (3,5));
-								int ano = Integer.parseInt(dataInformada.substring (6));
-
-								dataConvertida = new GregorianCalendar (ano, mes, dia);
+							boolean presencaData = false;
+							
+							if (!dataInformada.contains("_")) {
+								if (dataInformada != null && !dataInformada.equals ("")) {
+									int dia = Integer.parseInt(dataInformada.substring (0,2));
+									int mes = Integer.parseInt(dataInformada.substring (3,5));
+									int ano = Integer.parseInt(dataInformada.substring (6));
+	
+									dataConvertida = new GregorianCalendar (ano, mes, dia);
+									
+									presencaData = true;
+								}
 							}
-
+							
 							dataConvertida = new GregorianCalendar();
+							
+							double mensalidadeConvertida = 0D;
+							
+							if (mensalidade.getText() != null && !("").equals(mensalidade.getText()))
+								mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
+							
+							int matriculaConvertida = 0;
+							
+							if (matricula.getText() != null && !("").equals(matricula.getText()))
+								matriculaConvertida = Integer.parseInt(matriculaInformada);
 
-							double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
-							int matricula = Integer.parseInt(matriculaInformada);
-
-							Aluno aluno = new Aluno(matricula, nome.getText(), mensalidadeConvertida, dataConvertida);
+							Aluno aluno = new Aluno(matriculaConvertida, nome.getText(), mensalidadeConvertida, dataConvertida);
 							obj = new FileInputStream ("base.bas");
 							ObjectInputStream lerObj = new ObjectInputStream(obj);
 							LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
-
-							for (Aluno alu : lhs){
-								System.out.println(aluno.toString());
-							}
-
+							
 							String[] colunas = new String[] {"Matrícula","Nome", "Mensalidade", "Data"};
 
 							Object[] listaobjetos = (Object[]) lhs.toArray();
-
-							String matrizAluno[][] = new String[listaobjetos.length][4];
-
-
-							for (int j = 0; j < lhs.size(); j++) {
-
-								Aluno alunoObj = (Aluno) listaobjetos[j];
-
-								matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
-								matrizAluno[j][1] = alunoObj.getNome();
-								matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
-								matrizAluno[j][3] = alunoObj.formataData(alunoObj.getDataAdm());
-							}
-
-							tabela = new JTable(matrizAluno,colunas);
-							scroll = new JScrollPane();
-							scroll.setViewportView(tabela);
-							tabela.setEnabled(true);
-							tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 							
-							framePesquisa.add(scroll);
-							framePesquisa.repaint();
-							framePesquisa.validate();
+							LinkedHashSet<Aluno> resultSet = new LinkedHashSet<Aluno>();
+							
+							boolean resultadoExiste = false;
+							
+							for (int count = 0; count < listaobjetos.length; count++){
+								Aluno alunoRecuperado = (Aluno) listaobjetos[count];
+								
+								
+								/*if (matricula.getText() != null && !matricula.getText().equals ("") &&
+										nome.getText() != null && !nome.getText().equals ("") &&
+										mensalidade.getText() != null && !mensalidade.getText().equals ("") && 
+										dataAdm.getText() != null && !dataAdm.getText().equals ("")) {
+									// procura com todos os campos preenchidos
+									if (Integer.valueOf(alunoRecuperado.getMatricula()) == Integer.valueOf(matriculaInformada) &&
+											alunoRecuperado.getNome().equals(nomeInformado) &&
+											alunoRecuperado.getMensalidade() == mensalidadeConvertida &&
+											saoDatasIguais(alunoRecuperado.getDataAdm(), dataConvertida )) {
+										resultSet.add(alunoRecuperado);
+										resultadoExiste = true;
+									}
+								} else {*/
+									
+									if (matricula.getText() != null && !("").equals(matricula.getText())) { 
+										if (alunoRecuperado.getMatricula() == Integer.parseInt(matricula.getText()))
+											resultadoExiste = true;
+										else
+											resultadoExiste = false;
+									}
+									
+									if (nome.getText() != null && !nome.getText().equals ("")) { 
+										if (alunoRecuperado.getNome().equals(nome.getText()))
+											resultadoExiste = true;
+										else
+											resultadoExiste = false;
+									}
+									
+									if (mensalidade.getText() != null && !mensalidade.getText().equals ("")) { 
+										if (alunoRecuperado.getMensalidade() == mensalidadeConvertida)
+											resultadoExiste = true;
+										else
+											resultadoExiste = false;
+									}
+									
+									if (presencaData) {
+										if(saoDatasIguais(alunoRecuperado.getDataAdm(), dataConvertida ))
+											resultadoExiste = true;
+										else
+											resultadoExiste = false;
+									}
+									
+									if (resultadoExiste)
+										resultSet.add(alunoRecuperado);
+								}
+							//}
+							
+							if (!resultSet.isEmpty()) {
+							
+								Object[] listaResultado = (Object[]) resultSet.toArray();
+								
+								String matrizAluno[][] = new String[listaResultado.length][4];
+	
+
+								for (int j = 0; j < listaResultado.length; j++) {
+	
+									Aluno alunoObj = (Aluno) listaResultado[j];
+	
+									matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
+									matrizAluno[j][1] = alunoObj.getNome();
+									matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
+									matrizAluno[j][3] = alunoObj.formataData(alunoObj.getDataAdm());
+								}
+
+								tabela = new JTable(matrizAluno,colunas);
+								scroll = new JScrollPane();
+								scroll.setViewportView(tabela);
+								tabela.setEnabled(true);
+								tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+								
+								framePesquisa.add(scroll);
+								framePesquisa.repaint();
+								framePesquisa.validate();
+							} else {
+								JOptionPane.showMessageDialog(botaoPesquisar, "Nenhum registro foi encontrado");
+								limparPesquisa();
+							}
 							
 
 						} catch (FileNotFoundException ex) {
@@ -170,8 +243,8 @@ public class PesquisaView {
 							}
 						}
 					}
-				}
-				);
+				});
+		
 		botaoNovaPesquisa.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -189,7 +262,7 @@ public class PesquisaView {
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						new AlunoView();
+						//new AlunoView();
 						framePesquisa.dispose();
 					}});
 
@@ -205,6 +278,15 @@ public class PesquisaView {
 		nome.setText("");
 		mensalidade.setText("");
 		dataAdm.setText("");
-
+	}
+	
+	protected boolean saoDatasIguais (GregorianCalendar data, GregorianCalendar outraData) {
+		
+		boolean status = false;
+		
+		if ((data.DAY_OF_MONTH == outraData.DAY_OF_MONTH) && (data.MONTH == outraData.MONTH) && (data.YEAR == outraData.YEAR))
+			status = true;
+		
+		return status;
 	}
 }
