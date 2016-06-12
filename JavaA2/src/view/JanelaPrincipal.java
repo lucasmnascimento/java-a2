@@ -6,13 +6,15 @@ import java.awt.GridLayout;
 import java.awt.event.*;
 import javax.swing.*;
 
+import com.sun.glass.ui.MenuBar;
+
 @SuppressWarnings("serial")
 public class JanelaPrincipal extends JFrame {
 
 	public JanelaPrincipal() {
 		
-		super ("TRABALHO JAVA A2");
-		
+		super ("TRABALHO JAVA A2 teste");
+
 		JPanel panel = new JPanel();
                 panel.setLayout(new BorderLayout());
                              	    
@@ -27,13 +29,9 @@ public class JanelaPrincipal extends JFrame {
                 menuMestre.add(menuDois);
 		JMenuItem subMenuCadastro = new JMenuItem("Cadastro");
 		JMenuItem subMenuPesquisa = new JMenuItem("Pesquisa");
-		//MENU DE TESTES
-		JMenuItem subMenuTeste = new JMenuItem("teste alunoview");
 		
 		menuCadastro.add(subMenuCadastro);
 		menuCadastro.add(subMenuPesquisa);
-		//MENU DE TESTES
-		menuCadastro.add(subMenuTeste);
                 
                                              
 		// ------------ EVENTOS DO MENU ----------------
@@ -48,14 +46,6 @@ public class JanelaPrincipal extends JFrame {
 			public void actionPerformed (ActionEvent e) {
 				System.out.println("teste de evento - Pesquisa");
                                 new PesquisaView();
-			}
-		});
-		
-		//MENU DE TESTES
-		subMenuTeste.addActionListener (new ActionListener() {
-			public void actionPerformed (ActionEvent e) {
-				System.out.println("teste de evento - Pesquisa");
-                                new AlunoView();
 			}
 		});
                 

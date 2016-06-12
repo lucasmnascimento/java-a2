@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.Vector;
@@ -76,6 +77,7 @@ public class PesquisaView {
 				public void actionPerformed (ActionEvent e) {
                     FileInputStream obj = null;
                     try {
+                    	String matriculaInformada = matricula.getText();
                         String dataInformada = dataAdm.getText();
                         String nomeInformado = nome.getText();
                         
@@ -92,23 +94,23 @@ public class PesquisaView {
                         dataConvertida = new GregorianCalendar();
                         
                         double mensalidadeConvertida = Double.parseDouble(mensalidade.getText());
+                        int matricula = Integer.parseInt(matriculaInformada);
                         
-                        Aluno aluno = new Aluno(Integer.parseInt(matricula.getText()), nome.getText(), mensalidadeConvertida, dataConvertida);
-                        
+                        Aluno aluno = new Aluno(matricula, nome.getText(), mensalidadeConvertida, dataConvertida);
                         obj = new FileInputStream ("base.bas");
                         ObjectInputStream lerObj = new ObjectInputStream(obj);
-                        
                         LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
                         
                         for (Aluno alu : lhs){
                             System.out.println(aluno.toString());
                         }
                         
-                        String[] colunas = new String[] {"Matrícula","Nome","Mensalidade", "Data"};
+                        String[] colunas = new String[] {"Matrícula","Nome", "Mensalidade", "Data"};
                         
                         Object[] listaobjetos = (Object[]) lhs.toArray();
                         
                         String matrizAluno[][] = new String[listaobjetos.length][4];
+                        
                         
                         for (int j = 0; j < lhs.size(); j++) {
                         	
@@ -117,12 +119,13 @@ public class PesquisaView {
                     		matrizAluno[j][0] = Integer.toString(alunoObj.getMatricula());
                     		matrizAluno[j][1] = alunoObj.getNome();
                     		matrizAluno[j][2] = Double.toString(alunoObj.getMensalidade());
-                    		matrizAluno[j][3] = alunoObj.getNome().toString();
+                    		matrizAluno[j][3] = alunoObj.formataData(alunoObj.getDataAdm());
                     	}
                         
                         JTable tabela = new JTable(matrizAluno,colunas);
                         JScrollPane scroll = new JScrollPane();
                         scroll.setViewportView(tabela);
+                        tabela.setEnabled(false);
                         framePesquisa.add(scroll);
                         
                         framePesquisa.repaint();

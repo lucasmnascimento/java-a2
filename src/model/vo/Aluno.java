@@ -1,14 +1,27 @@
 package model.vo;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Aluno implements Serializable{
+	
+	/**
+	 * 
+	 */
+//	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 6325158508878264619L;
 	private int matricula;
 	private String nome;
 	private double mensalidade;
 	private GregorianCalendar dataAdm;
 	
-	public Aluno(int matricula, String nome, double mensalidade, GregorianCalendar dataAdm){
+
+
+	public Aluno(int matricula, String nome, double mensalidade, GregorianCalendar dataAdm) {
 		this.matricula=matricula;
 		this.nome=nome;
 		this.mensalidade=mensalidade;
@@ -43,5 +56,20 @@ public class Aluno implements Serializable{
 		return "Aluno [matricula=" + matricula + ", nome=" + nome + ", mensalidade=" + mensalidade + ", dataAdm="
 				+ dataAdm + "]";
 	}
-
+	public  String formataData(GregorianCalendar data){
+		Calendar cal = data;
+		SimpleDateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
+	    formata.setCalendar(data);
+	    cal.add(Calendar.MONTH, -1);
+	    String dataFormatada = formata.format(data.getTime());
+	    return dataFormatada;
+	}
+	
+	
+/*
+	@Override
+	public int compareTo(Object arg0) {
+		Aluno aluno = (Aluno) arg0;
+		return this.getNome().compareTo(aluno.getNome());
+	}*/
 }
