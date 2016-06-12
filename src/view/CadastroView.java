@@ -8,15 +8,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import model.vo.Aluno;
 
@@ -37,10 +43,20 @@ public class CadastroView {
 		JPanel panelCadastro = new JPanel();
 		frameCadastro.setLayout (new GridLayout (3, 3));
 		
+		
         matricula = new JTextField (5);
 	    nome = new JTextField (15);
 	    mensalidade = new JTextField (5);
-	    dataAdm = new JTextField (10);
+	    MaskFormatter ftmData; 
+		try {
+			ftmData = new MaskFormatter("##/##/####");
+			ftmData.setValidCharacters("0123456789");
+			ftmData.setPlaceholderCharacter('_');
+			dataAdm = new JFormattedTextField(ftmData);		
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	    
 	    JButton botaoSalvar = new JButton ("Salvar");
 	    

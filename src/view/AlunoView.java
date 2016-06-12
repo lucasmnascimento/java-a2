@@ -1,7 +1,11 @@
 package view;
 
 import java.awt.*;
+import java.util.GregorianCalendar;
+
 import javax.swing.*;
+
+import model.vo.Aluno;
 
 //import model.vo.Aluno;
 
@@ -12,13 +16,16 @@ public class AlunoView {
 	JTextField mensalidade;
 	JTextField dataAdm;
 	
-	public AlunoView() {
-		init();
+	public AlunoView(Aluno aluno) {
+		init(aluno);
 	}
 	
-	protected void init() {
+	protected void init(Aluno aluno) {
 		JFrame frameAlunoView = new JFrame ("Aluno");
-		
+		aluno.getDataAdm();
+		aluno.getNome();
+		aluno.getMatricula();
+		aluno.getMensalidade();
 		JPanel panelAlunoView = new JPanel();
 		frameAlunoView.setLayout (new GridLayout (3, 3));
 		
@@ -26,6 +33,11 @@ public class AlunoView {
 	    nome = new JTextField (15);
 	    mensalidade = new JTextField (5);
 	    dataAdm = new JTextField (10);
+	    
+	    matricula.setText(Integer.toString(aluno.getMatricula()));
+	    nome.setText(aluno.getNome()); 
+	    mensalidade.setText(Double.toString(aluno.getMensalidade()));
+	    dataAdm.setText(aluno.formataData(aluno.getDataAdm()));
 	    
 	    JButton botaoExcluir = new JButton ("Excluir");
 	    JButton botaoAlterar = new JButton ("Alterar");

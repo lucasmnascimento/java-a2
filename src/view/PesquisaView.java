@@ -7,12 +7,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.text.MaskFormatter;
 
 import model.vo.Aluno;
 
@@ -35,7 +38,7 @@ public class PesquisaView {
 		init();
 	}
 
-	protected void init() {
+	protected void init(){
 		JFrame framePesquisa = new JFrame ("Pesquisa");
 
 		JPanel panelPesquisa = new JPanel();
@@ -46,7 +49,19 @@ public class PesquisaView {
 		matricula = new JTextField (5);
 		nome = new JTextField (15);
 		mensalidade = new JTextField (5);
-		dataAdm = new JTextField (10);
+		
+		
+		MaskFormatter ftmData;
+		try {
+			ftmData = new MaskFormatter("##/##/####");
+			ftmData.setValidCharacters("0123456789");
+			ftmData.setPlaceholderCharacter('_');
+			dataAdm = new JFormattedTextField(ftmData);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		  
 
 		JButton botaoPesquisar = new JButton ("Pesquisar");
 		JButton botaoNovaPesquisa = new JButton ("Limpar");
@@ -174,7 +189,7 @@ public class PesquisaView {
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						new AlunoView();
+						new AlunoView(aluno);
 						framePesquisa.dispose();
 					}});
 
