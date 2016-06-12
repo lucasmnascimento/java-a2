@@ -1,16 +1,20 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import javax.swing.*;
+
+import com.sun.glass.ui.MenuBar;
 
 @SuppressWarnings("serial")
 public class JanelaPrincipal extends JFrame {
 
 	public JanelaPrincipal() {
 		
-		super ("TRABALHO JAVA A2");
-		
+		super ("TRABALHO JAVA A2 teste");
+
 		JPanel panel = new JPanel();
                 panel.setLayout(new BorderLayout());
                              	    
