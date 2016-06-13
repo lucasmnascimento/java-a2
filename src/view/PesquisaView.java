@@ -59,7 +59,6 @@ public class PesquisaView {
 			ftmData.setPlaceholderCharacter('_');
 			dataAdm = new JFormattedTextField(ftmData);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		  
@@ -143,33 +142,18 @@ public class PesquisaView {
 							
 							boolean resultadoExiste = false;
 							
-							for (int count = 0; count < listaobjetos.length; count++){
+							for (int count = 0; count < listaobjetos.length; count++) {
 								Aluno alunoRecuperado = (Aluno) listaobjetos[count];
-								
-								
-								/*if (matricula.getText() != null && !matricula.getText().equals ("") &&
-										nome.getText() != null && !nome.getText().equals ("") &&
-										mensalidade.getText() != null && !mensalidade.getText().equals ("") && 
-										dataAdm.getText() != null && !dataAdm.getText().equals ("")) {
-									// procura com todos os campos preenchidos
-									if (Integer.valueOf(alunoRecuperado.getMatricula()) == Integer.valueOf(matriculaInformada) &&
-											alunoRecuperado.getNome().equals(nomeInformado) &&
-											alunoRecuperado.getMensalidade() == mensalidadeConvertida &&
-											saoDatasIguais(alunoRecuperado.getDataAdm(), dataConvertida )) {
-										resultSet.add(alunoRecuperado);
-										resultadoExiste = true;
-									}
-								} else {*/
 									
 									if (matricula.getText() != null && !("").equals(matricula.getText())) { 
-										if (alunoRecuperado.getMatricula() == Integer.parseInt(matricula.getText()))
+										if (alunoRecuperado.getMatricula() == Integer.parseInt (matricula.getText()))
 											resultadoExiste = true;
 										else
 											resultadoExiste = false;
 									}
 									
 									if (nome.getText() != null && !nome.getText().equals ("")) { 
-										if (alunoRecuperado.getNome().equals(nome.getText()))
+										if (alunoRecuperado.getNome().equalsIgnoreCase (nome.getText()))
 											resultadoExiste = true;
 										else
 											resultadoExiste = false;
@@ -190,9 +174,8 @@ public class PesquisaView {
 									}
 									
 									if (resultadoExiste)
-										resultSet.add(alunoRecuperado);
+										resultSet.add (alunoRecuperado);
 								}
-							//}
 							
 							if (!resultSet.isEmpty()) {
 							
@@ -262,8 +245,21 @@ public class PesquisaView {
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						//new AlunoView();
-						framePesquisa.dispose();
+						int linhaSelecionada = tabela.getSelectedRow();
+						
+						String matriculaRetornada = (String) tabela.getValueAt(linhaSelecionada,0);
+						String nomeRetornado = (String) tabela.getValueAt(linhaSelecionada,1);
+						String mensalidadeRetornada = (String) tabela.getValueAt(linhaSelecionada,2);
+						String dataRetornada = (String) tabela.getValueAt(linhaSelecionada, 3);
+						
+						GregorianCalendar dataConvertida = Aluno.formataData(dataRetornada);
+						
+						Aluno aluno = new Aluno(Integer.parseInt(matriculaRetornada), nomeRetornado, 
+								Double.parseDouble(mensalidadeRetornada), dataConvertida);
+						
+						new AlunoView(aluno);
+						
+						//framePesquisa.dispose();
 					}});
 
 		//framePesquisa.pack();
