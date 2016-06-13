@@ -3,7 +3,16 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 import javax.swing.*;
 
@@ -101,6 +110,64 @@ public class AlunoView {
 				frameAlunoView.validate();
 			}
 		});
+	    botaoCancelar.addActionListener (new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				nome.setEnabled(false);
+				mensalidade.setEnabled(false);
+				dataAdm.setEnabled(false);
+				
+				botaoSalvar.setVisible (false);
+				botaoCancelar.setVisible (false);
+				botaoAlterar.setVisible (true);
+				botaoExcluir.setVisible (true);
+				
+				
+				
+				frameAlunoView.repaint();
+				frameAlunoView.validate();
+			}});
+	    botaoExcluir.addActionListener (new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				 int confirma = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja excluir o aluno?", "Sim", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
+				    if (confirma == JOptionPane.YES_OPTION) {
+						FileInputStream obj;
+						try {
+							obj = new FileInputStream ("base.bas");
+							ObjectInputStream lerObj = new ObjectInputStream(obj);
+							LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+							OutputStream outputStream = new FileOutputStream ("base.bas");
+							ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream);
+							Iterator<Aluno> iterator = lhs.iterator();
+							while (iterator.hasNext()) {
+							   Aluno alunoTem = iterator.next();
+							    if (alunoTem.equals(aluno)) {
+							        iterator.remove();
+							        objectOutput.writeObject(lhs);
+							    }
+							}
+							objectOutput.close();
+							lerObj.close();
+							frameAlunoView.dispose();
+						} catch (IOException | ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				    } else {
+	                            }
+				nome.setEnabled(false);
+				mensalidade.setEnabled(false);
+				dataAdm.setEnabled(false);
+				
+				botaoSalvar.setVisible (false);
+				botaoCancelar.setVisible (false);
+				botaoAlterar.setVisible (true);
+				botaoExcluir.setVisible (true);
+				
+				
+				
+				frameAlunoView.repaint();
+				frameAlunoView.validate();
+			}});
 	    
 	    frameAlunoView.setLocationRelativeTo (null);
 		

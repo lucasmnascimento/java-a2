@@ -72,6 +72,13 @@ public class Aluno implements Serializable{
 		
 		return new GregorianCalendar (ano, mes, dia);
 	}
+	
+	public boolean equals(Object o){
+		Aluno aluno = (Aluno) o;
+		
+		return this.getMatricula() == aluno.getMatricula();
+		
+	}
 /*
 	@Override
 	public int compareTo(Object arg0) {
