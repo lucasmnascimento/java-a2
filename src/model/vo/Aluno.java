@@ -18,8 +18,6 @@ public class Aluno implements Serializable{
 	private String nome;
 	private double mensalidade;
 	private GregorianCalendar dataAdm;
-	
-
 
 	public Aluno(int matricula, String nome, double mensalidade, GregorianCalendar dataAdm) {
 		this.matricula=matricula;
@@ -56,6 +54,7 @@ public class Aluno implements Serializable{
 		return "Aluno [matricula=" + matricula + ", nome=" + nome + ", mensalidade=" + mensalidade + ", dataAdm="
 				+ dataAdm + "]";
 	}
+	
 	public  String formataData(GregorianCalendar data){
 		Calendar cal = data;
 		SimpleDateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
@@ -65,7 +64,14 @@ public class Aluno implements Serializable{
 	    return dataFormatada;
 	}
 	
-	
+	public static GregorianCalendar formataData(String data){
+		
+		int dia = Integer.parseInt(data.substring(0, 2));
+		int mes = Integer.parseInt(data.substring(3, 5));
+		int ano = Integer.parseInt(data.substring(6));
+		
+		return new GregorianCalendar (ano, mes, dia);
+	}
 /*
 	@Override
 	public int compareTo(Object arg0) {
