@@ -276,6 +276,7 @@ public class PesquisaView {
 		dataAdm.setText("");
 	}
 	
+	// TODO refatorar o código... colocar em Aluno.
 	protected boolean saoDatasIguais (GregorianCalendar data, GregorianCalendar outraData) {
 		
 		boolean status = false;

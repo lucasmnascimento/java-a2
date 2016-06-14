@@ -26,6 +26,8 @@ public class Aluno implements Serializable{
 		this.dataAdm=dataAdm;
 	}
 
+	public Aluno(){}
+	
 	public int getMatricula() {
 		return matricula;
 	}
