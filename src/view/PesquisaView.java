@@ -181,8 +181,6 @@ public class PesquisaView {
 				}
 			}
 			
-			dataConvertida = new GregorianCalendar();
-			
 			double mensalidadeConvertida = 0D;
 			
 			if (mensalidade.getText() != null && !("").equals(mensalidade.getText()))
@@ -203,12 +201,10 @@ public class PesquisaView {
 			Object[] listaobjetos = (Object[]) lhs.toArray();
 			
 			if (ordenacaoNome.isSelected()) {
-				SortedSet<Aluno> setSorted = (SortedSet<Aluno>) lhs;
-				SortedSet<Aluno> sorted = Collections.checkedSortedSet(setSorted, Aluno.class);
+				
 			} else if (ordenacaoMatricula.isSelected()){
 				
 			}
-				  
 			
 			LinkedHashSet<Aluno> resultSet = new LinkedHashSet<Aluno>();
 			
@@ -239,7 +235,7 @@ public class PesquisaView {
 					}
 					
 					if (presencaData) {
-						if(saoDatasIguais(alunoRecuperado.getDataAdm(), dataConvertida ))
+						if(alunoRecuperado.getDataAdm().compareTo (dataConvertida) == 0)
 							resultadoExiste = true;
 						else
 							resultadoExiste = false;
@@ -280,7 +276,6 @@ public class PesquisaView {
 				limparPesquisa();
 			}
 			
-
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(PesquisaView.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println("Arquivo não encontrado!");
@@ -304,16 +299,5 @@ public class PesquisaView {
 		nome.setText("");
 		mensalidade.setText("");
 		dataAdm.setText("");
-	}
-	
-	// TODO refatorar o código... colocar em Aluno.
-	protected boolean saoDatasIguais (GregorianCalendar data, GregorianCalendar outraData) {
-		
-		boolean status = false;
-		
-		if ((data.DAY_OF_MONTH == outraData.DAY_OF_MONTH) && (data.MONTH == outraData.MONTH) && (data.YEAR == outraData.YEAR))
-			status = true;
-		
-		return status;
 	}
 }
