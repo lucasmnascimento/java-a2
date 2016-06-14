@@ -8,9 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,8 +148,7 @@ public class PesquisaView {
 						
 						new AlunoView(aluno);
 					}});
-
-		//framePesquisa.pack();
+		
 		framePesquisa.setLocationRelativeTo (null);
 
 		framePesquisa.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
@@ -200,19 +201,23 @@ public class PesquisaView {
 			
 			Object[] listaobjetos = (Object[]) lhs.toArray();
 			
-			if (ordenacaoNome.isSelected()) {
-				
-			} else if (ordenacaoMatricula.isSelected()){
-				
-			}
+			List<Aluno> listParagraph = null;
+			
+			listParagraph = new ArrayList<Aluno>(lhs);
+			
+			if (ordenacaoNome.isSelected())
+				Collections.sort(listParagraph);
+			else if (ordenacaoMatricula.isSelected())
+				Collections.sort(listParagraph, new Aluno());
 			
 			LinkedHashSet<Aluno> resultSet = new LinkedHashSet<Aluno>();
 			
 			boolean resultadoExiste = false;
 			
-			for (int count = 0; count < listaobjetos.length; count++) {
-				Aluno alunoRecuperado = (Aluno) listaobjetos[count];
-					
+			if (listParagraph != null && !listParagraph.isEmpty()) {
+				for (int count = 0; count < listParagraph.size(); count++) {
+					Aluno alunoRecuperado = (Aluno) listParagraph.get(count);
+						
 					if (matricula.getText() != null && !("").equals(matricula.getText())) { 
 						if (alunoRecuperado.getMatricula() == Integer.parseInt (matricula.getText()))
 							resultadoExiste = true;
@@ -241,17 +246,25 @@ public class PesquisaView {
 							resultadoExiste = false;
 					}
 					
-					if (resultadoExiste)
+					if (resultadoExiste){
 						resultSet.add (alunoRecuperado);
+					} else {
+						if((matricula.getText() == null || ("").equals(matricula.getText())) &&
+								(nome.getText() == null || ("").equals(nome.getText())) &&
+								(mensalidade.getText() != null || ("").equals(mensalidade.getText()) ) &&
+								(!presencaData)) {
+							resultSet.add (alunoRecuperado);
+						}
+					}
 				}
+			}
 			
 			if (!resultSet.isEmpty()) {
 			
 				Object[] listaResultado = (Object[]) resultSet.toArray();
 				
 				String matrizAluno[][] = new String[listaResultado.length][4];
-
-
+				
 				for (int j = 0; j < listaResultado.length; j++) {
 
 					Aluno alunoObj = (Aluno) listaResultado[j];
