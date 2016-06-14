@@ -90,7 +90,7 @@ public class CadastroView {
 	    
 	    botaoSalvar.addActionListener(
 	    	new ActionListener() {
-				@SuppressWarnings({ "rawtypes", "unchecked", "resource" })
+				@SuppressWarnings({ "unchecked", "resource" })
 				@Override
 				public void actionPerformed (ActionEvent e) {
 					if (matricula.getText() != null && !matricula.getText().equals ("") &&

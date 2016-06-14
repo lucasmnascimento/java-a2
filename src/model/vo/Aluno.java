@@ -2,9 +2,10 @@ package model.vo;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 
-public class Aluno implements Serializable{
+public class Aluno implements Serializable, Comparable<Aluno>, Comparator<Aluno>{
 	
 	/**
 	 * 
@@ -26,6 +27,8 @@ public class Aluno implements Serializable{
 		this.dataAdm=dataAdm;
 	}
 
+	public Aluno(){}
+	
 	public int getMatricula() {
 		return matricula;
 	}
@@ -55,7 +58,7 @@ public class Aluno implements Serializable{
 				+ dataAdm + "]";
 	}
 	
-	public  String formataData(GregorianCalendar data){
+	public String formataData(GregorianCalendar data){
 		Calendar cal = data;
 		SimpleDateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 	    formata.setCalendar(data);
@@ -79,10 +82,19 @@ public class Aluno implements Serializable{
 		return this.getMatricula() == aluno.getMatricula();
 		
 	}
-/*
+
 	@Override
-	public int compareTo(Object arg0) {
-		Aluno aluno = (Aluno) arg0;
-		return this.getNome().compareTo(aluno.getNome());
-	}*/
+	public int compare(Aluno o1, Aluno o2) {
+		if (o1.getMatricula() == o2.getMatricula())
+			return 0;
+		else if (o1.getMatricula() > o2.getMatricula())
+			return -1;
+		else 
+			return 1;
+	}
+
+	@Override
+	public int compareTo(Aluno o) {
+		return this.getNome().compareTo(o.getNome());
+	}
 }

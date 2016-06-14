@@ -9,8 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.GregorianCalendar;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -93,18 +93,69 @@ public class AlunoView {
 	    
 	    frameAlunoView.add (panelAlunoView);
 	    
+	    botaoSalvar.addActionListener (new ActionListener() {
+			@SuppressWarnings({ "unchecked", "resource" })
+			@Override
+			public void actionPerformed (ActionEvent arg0) {
+				
+				try {
+					FileInputStream obj = new FileInputStream ("base.bas");
+					ObjectInputStream lerObj = new ObjectInputStream (obj);
+					LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+					lerObj.close();
+					
+					Object[] listaobjetos = (Object[]) lhs.toArray();
+					
+					lhs = new LinkedHashSet<Aluno> ();
+					
+					for (int count = 0; count < listaobjetos.length; count++) {
+						Aluno alunoIt = (Aluno) listaobjetos [count];
+						
+						if (aluno.getMatricula() == alunoIt.getMatricula()) {
+							alunoIt.setNome(nome.getText());
+							alunoIt.setMensalidade(Double.parseDouble(mensalidade.getText()));
+							
+							String dataInformada = dataAdm.getText();
+							
+							int dia = Integer.parseInt(dataInformada.substring (0,2));
+							int mes = Integer.parseInt(dataInformada.substring (3,5));
+							int ano = Integer.parseInt(dataInformada.substring (6));
+							
+							GregorianCalendar dataConvertida = new GregorianCalendar (ano, mes, dia);
+							
+							alunoIt.setDataAdm (dataConvertida);
+						}
+						lhs.add (alunoIt);
+					}
+					
+					FileOutputStream saidaStream = new FileOutputStream ("base.bas");
+					ObjectOutputStream saidaStreamobjeto = new ObjectOutputStream (saidaStream);
+					saidaStreamobjeto.writeObject (lhs);
+					
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				
+				JOptionPane.showMessageDialog (botaoSalvar, "Gravação efetuada com sucesso");
+				
+				frameAlunoView.dispose();
+			}
+	    });
+	    
 	    botaoAlterar.addActionListener (new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
-				nome.setEnabled(true);
-				mensalidade.setEnabled(true);
-				dataAdm.setEnabled(true);
+				nome.setEnabled (true);
+				mensalidade.setEnabled (true);
+				dataAdm.setEnabled (true);
 				
 				botaoSalvar.setVisible (true);
 				botaoCancelar.setVisible (true);
 				botaoAlterar.setVisible (false);
 				botaoExcluir.setVisible (false);
-				
-				
 				
 				frameAlunoView.repaint();
 				frameAlunoView.validate();
@@ -127,6 +178,7 @@ public class AlunoView {
 				frameAlunoView.validate();
 			}});
 	    botaoExcluir.addActionListener (new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed (ActionEvent e) {
 				 int confirma = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja excluir o aluno?", "Sim", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
 				    if (confirma == JOptionPane.YES_OPTION) {
@@ -149,7 +201,6 @@ public class AlunoView {
 							lerObj.close();
 							frameAlunoView.dispose();
 						} catch (IOException | ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 				    } else {
@@ -173,6 +224,13 @@ public class AlunoView {
 		
 	    frameAlunoView.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
 	    frameAlunoView.setVisible (true);
+	}
+	
+	protected boolean saoDatasIguais (GregorianCalendar data, GregorianCalendar outraData) {
+		boolean status = false;
+		if ((data.DAY_OF_MONTH == outraData.DAY_OF_MONTH) && (data.MONTH == outraData.MONTH) && (data.YEAR == outraData.YEAR))
+			status = true;
+		return status;
 	}
 	
 }
