@@ -57,7 +57,7 @@ public class Aluno implements Serializable{
 				+ dataAdm + "]";
 	}
 	
-	public  String formataData(GregorianCalendar data){
+	public String formataData(GregorianCalendar data){
 		Calendar cal = data;
 		SimpleDateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 	    formata.setCalendar(data);

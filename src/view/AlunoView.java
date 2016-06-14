@@ -94,20 +94,44 @@ public class AlunoView {
 	    frameAlunoView.add (panelAlunoView);
 	    
 	    botaoSalvar.addActionListener (new ActionListener() {
+			@SuppressWarnings({ "unchecked", "resource" })
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				FileInputStream obj = null;
-				ObjectInputStream lerObj = null;
-				LinkedHashSet<Aluno> lhs = null;
-				
-				FileOutputStream saidaStream = null;
-				ObjectOutputStream saidaStreamobjeto = null;
+			public void actionPerformed (ActionEvent arg0) {
 				
 				try {
-					obj = new FileInputStream ("base.bas");
-					lerObj = new ObjectInputStream (obj);
-					lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
+					FileInputStream obj = new FileInputStream ("base.bas");
+					ObjectInputStream lerObj = new ObjectInputStream (obj);
+					LinkedHashSet<Aluno> lhs = (LinkedHashSet<Aluno>) lerObj.readObject();
 					lerObj.close();
+					
+					Object[] listaobjetos = (Object[]) lhs.toArray();
+					
+					lhs = new LinkedHashSet<Aluno> ();
+					
+					for (int count = 0; count < listaobjetos.length; count++) {
+						Aluno alunoIt = (Aluno) listaobjetos [count];
+						
+						if (aluno.getMatricula() == alunoIt.getMatricula()) {
+							alunoIt.setNome(nome.getText());
+							alunoIt.setMensalidade(Double.parseDouble(mensalidade.getText()));
+							
+							String dataInformada = dataAdm.getText();
+							
+							int dia = Integer.parseInt(dataInformada.substring (0,2));
+							int mes = Integer.parseInt(dataInformada.substring (3,5));
+							int ano = Integer.parseInt(dataInformada.substring (6));
+							
+							GregorianCalendar dataConvertida = new GregorianCalendar (ano, mes, dia);
+							
+							alunoIt.setDataAdm (dataConvertida);
+						}
+						lhs.add (alunoIt);
+					}
+					
+					FileOutputStream saidaStream = new FileOutputStream ("base.bas");
+					ObjectOutputStream saidaStreamobjeto = new ObjectOutputStream (saidaStream);
+					saidaStreamobjeto.writeObject (lhs);
+					
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
@@ -116,50 +140,13 @@ public class AlunoView {
 					e1.printStackTrace();
 				}
 				
-				Object[] listaobjetos = (Object[]) lhs.toArray();
+				JOptionPane.showMessageDialog (botaoSalvar, "Gravação efetuada com sucesso");
 				
-				for (int count = 0; count < listaobjetos.length; count++) {
-					Aluno alunoIt = (Aluno) listaobjetos [count];
-					
-					if (aluno.getMatricula() == alunoIt.getMatricula()) {
-						
-						if (!aluno.getNome().equals (alunoIt.getNome()))
-							alunoIt.setNome(aluno.getNome());
-						
-						if (aluno.getMensalidade() == alunoIt.getMensalidade())
-							alunoIt.setMensalidade(aluno.getMensalidade());
-						
-						if (aluno.getMensalidade() == alunoIt.getMensalidade())
-							alunoIt.setMensalidade (aluno.getMensalidade());
-						
-						if (saoDatasIguais (aluno.getDataAdm(), alunoIt.getDataAdm()))
-							alunoIt.setDataAdm (aluno.getDataAdm());
-					}
-				}
-				
-				for (Aluno alu : lhs) {
-					System.out.println ("===========================================");
-					System.out.println ("matricula: "+alu.getMatricula());
-					System.out.println ("Nome: "+alu.getNome());
-					System.out.println ("Mesalidade: "+alu.getMensalidade());
-					System.out.println ("Data:"+new Aluno().formataData(alu.getDataAdm()));
-					System.out.println ("===========================================");
-				}
-				
-				try {
-					saidaStream = new FileOutputStream ("base.bas");
-					saidaStreamobjeto = new ObjectOutputStream (saidaStream);
-					saidaStreamobjeto.writeObject(lhs);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				frameAlunoView.dispose();
 			}
 	    });
 	    
 	    botaoAlterar.addActionListener (new ActionListener() {
-			@SuppressWarnings ("unchecked")
 			public void actionPerformed (ActionEvent e) {
 				nome.setEnabled (true);
 				mensalidade.setEnabled (true);
@@ -191,6 +178,7 @@ public class AlunoView {
 				frameAlunoView.validate();
 			}});
 	    botaoExcluir.addActionListener (new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed (ActionEvent e) {
 				 int confirma = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja excluir o aluno?", "Sim", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
 				    if (confirma == JOptionPane.YES_OPTION) {
@@ -213,7 +201,6 @@ public class AlunoView {
 							lerObj.close();
 							frameAlunoView.dispose();
 						} catch (IOException | ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 				    } else {

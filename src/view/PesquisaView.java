@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,12 +62,13 @@ public class PesquisaView {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
-		  
-
+		
+		JCheckBox ordenacaoNome = new JCheckBox();
+		
 		JButton botaoPesquisar = new JButton ("Pesquisar");
 		JButton botaoNovaPesquisa = new JButton ("Limpar");
 		JButton botaoEditar = new JButton ("Editar");
-
+		
 		panelPesquisa.add (new JLabel ("Matrícula "));
 		panelPesquisa.add (matricula);
 
