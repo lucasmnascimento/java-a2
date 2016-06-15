@@ -1,0 +1,4 @@
+* incluir dois objetos com a mesma matrícula
+* consertar pesquisa qnd não tiver grid (IOException)
+* (tentar) ajeitar a view
+* (taaaaaaalvez) refatorar código
